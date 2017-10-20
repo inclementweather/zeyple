@@ -119,8 +119,17 @@ class Zeyple:
                 # "7bit" otherwise Thunderbird seems to hang in some cases.
                 del out_message["Content-Transfer-Encoding"]
             else:
-                logging.warn("No keys found, message will be sent unencrypted")
-                out_message = copy.copy(in_message)
+                if self.config.has_option('zeyple', 'force_encrypt') and \
+                   self.config.getboolean('zeyple', 'force_encrypt'):
+                    logging.warn("No keys found, force encrypt is enabled, \
+                                  message will be replaced")
+                    out_message = copy.copy(in_message)
+                    out_message.set_payload("The content of this email has "
+                    "been removed because it could not be encrypted. "
+                    "Please contact your administrator. ")
+                else:
+                    logging.warn("No keys found, message will be sent unencrypted")
+                    out_message = copy.copy(in_message)
 
             self._add_zeyple_header(out_message)
             self._send_message(out_message, recipient)
