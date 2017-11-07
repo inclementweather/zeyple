@@ -121,8 +121,8 @@ class Zeyple:
             else:
                 if self.config.has_option('zeyple', 'force_encrypt') and \
                    self.config.getboolean('zeyple', 'force_encrypt'):
-                    logging.warn("No keys found, force encrypt is enabled, \
-                                  message will be replaced")
+                    logging.warn("No keys found, force encrypt is enabled, "
+                                 "message will be replaced")
                     out_message = copy.copy(in_message)
                     out_message.set_payload("The content of this email has "
                     "been removed because it could not be encrypted. "
